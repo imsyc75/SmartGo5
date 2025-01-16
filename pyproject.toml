@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "smartgo5"
+version = "0.1.0"
+description = ""
+authors = ["imsyc75 <songyuchen2003@hotmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+numpy = "^2.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+pylint = "^3.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,2 @@
+本周我还没有开始进行编码，更多的工作专注在思考和规划应用程序的实施上。此外阅读课程材料也花费了一定的时间。我在互联网上阅读了一些关于minmax算法和alpha-beta剪枝优化的的文章。同时回顾了Introduction to Ai 和ohjelmistotuotannon 课程上的内容。
+第二周将开发项目的核心，也就是AI能够与用户进行基本的对战。这里需要实现MinMax算法和Alpha-Beta的剪枝优化。
