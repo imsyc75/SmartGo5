@@ -1,2 +1,11 @@
-本周我还没有开始进行编码，更多的工作专注在思考和规划应用程序的实施上。此外阅读课程材料也花费了一定的时间。我在互联网上阅读了一些关于minmax算法和alpha-beta剪枝优化的的文章。同时回顾了Introduction to Ai 和ohjelmistotuotannon 课程上的内容。
-第二周将开发项目的核心，也就是AI能够与用户进行基本的对战。这里需要实现MinMax算法和Alpha-Beta的剪枝优化。
+Tällä viikolla painopiste oli projektin suunnittelussa ja kurssin materiaaliin tutustumisessa. En vielä aloittanut koodausta.
+
+Olen saanut valmiiksi Git-repositorion luomisen ja Labtoolin rekisteröinnin. Samalla olen rakentanut projektikehyksen ja konfiguroinut tarvittavat riippuvuudet.
+
+Tein perusteellisen tutkimuksen Gomokun AI:n toteuttamiseen tarvittavista ydinalgoritmeista, mukaan lukien Minimax-algoritmi ja Alpha-Beta Pruning. Introduction to AI ja Ohjelmistotuotanto kurssien relevanttia sisältöä yhdistettynä internetin artikkeleihin sain syvemmän ymmärryksen näistä algoritmeista.
+
+Ensi viikolla siirryn projektin ydinkehitysvaiheeseen. Päätehtävänä on toteuttaa Gomokun perustoiminnot ja tekoälyjärjestelmä sekä tarjota vastaavat yksikkötestit. Olen laatinut yksityiskohtaisen viikkosuunnitelman varmistaakseni, että projekti pysyy aikataulussa.
+
+Projekti etenee sujuvasti, eikä ole tullut mitään ongelmia. Haastavaa on myös ehkä hahmottaa, miten ohjelma tulee käytännössä toimimaan. Mutta se on yleinen tilanne projektin alkuvaiheessa. Kun koodia kirjoitetaan vähitellen, uskon, että nämä ongelmat ratkeavat hyvin.
+
+Tällä viikolla käytin työhön 8 tuntia.
