@@ -15,14 +15,12 @@ class GomokuUI:
         self.game = GomokuGame(board_size=self.BOARD_SIZE)
         self.game.start()
         
-        # Colors
         self.BOARD_COLOR = (222, 184, 135)
         self.LINE_COLOR = (0, 0, 0)
         self.BLACK = (0, 0, 0)
         self.WHITE = (255, 255, 255)
         
     def draw_board(self):
-        # Fill background
         self.screen.fill(self.BOARD_COLOR)
         
         # Draw grid lines

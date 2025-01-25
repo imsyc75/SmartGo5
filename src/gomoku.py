@@ -1,3 +1,6 @@
+# Gomoku logic design based on xerwin's tutorial
+# http://www.cnblogs.com/erwin/p/7828956.html
+
 class Board:
     def __init__(self, size=20):
         self.size = size
