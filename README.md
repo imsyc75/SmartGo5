@@ -8,3 +8,18 @@ This project is an implementation of Gomoku AI as part of the Data Structures an
 [Viikko 1](docs/viikkoraportit/viikko1.md)
 
 ## User's instruction
+After cloning the repository to your own machine, start poetry in the project root directory using the following command
+
+```bash
+poetry install
+```
+
+Activate virtual environment
+```bash
+poetry shell
+```
+
+Run the game
+```bash
+poetry run python3 src/ui.py
+```
