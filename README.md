@@ -23,3 +23,8 @@ Run the game
 ```bash
 poetry run python3 src/ui.py
 ```
+
+Run the test
+```bash
+python -m unittest src/tests/test_board.py 
+```
