@@ -28,3 +28,7 @@ Run the test
 ```bash
 python -m unittest src/tests/test_board.py 
 ```
+
+## References
+https://sortingsearching.com/2020/05/18/gomoku.html
+https://en.wikipedia.org/wiki/Minimax
