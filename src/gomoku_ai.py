@@ -13,32 +13,14 @@ class GomokuAI:
         # High-value chess patterns will strongly influence the AI's choice, giving priority to forming or defending high-value chess patterns.
         
 
-    def get_next_move(self, board):
-        valid_moves = self._get_valid_moves(board)
-        best_score = float('-inf')
-        best_move = None
-        
-        for move in valid_moves:
-            x, y = move
-            board.grid[x][y] = 'O'  # # X is player, O is AI
-            score = self._minimax(board, self.search_depth, False)
-            board.grid[x][y] = None
-            
-            if score > best_score:
-                best_score = score
-                best_move = move
-                
-        return best_move
-
-
-    def _get_valid_moves(self, board):
+    def _get_valid_moves(self, board): 
         valid_moves = set()
         directions = [(-1, 0),(1, 0),
                       (0, -1), (0, 1),
                       (-1, 1), (1, -1),
                       (-1, -1), (1, 1)]  
         
-        for x in range(self.board_size):
+        for x in range(self.board_size): 
             for y in range(self.board_size):
                 if board.grid[x][y] is not None:
                     for dx, dy in directions:
@@ -50,31 +32,44 @@ class GomokuAI:
                             
         return valid_moves if valid_moves else board.available_moves
 
-
-    def _minimax(self, board, depth, is_maximizing):
+    
+    def _minimax(self, board, depth, is_maximizing, alpha=-float('inf'), beta=float('inf')):
         if depth == 0 or board.check_win():
-            return self._evaluate_board(board)
-            
-        valid_moves = self._get_valid_moves(board)
+            return self._evaluate_board(board), None
         
+        valid_moves = self._get_valid_moves(board)
+        best_move = None
+    
         if is_maximizing:
             max_score = float('-inf')
             for move in valid_moves:
                 x, y = move
                 board.grid[x][y] = 'O'
-                score = self._minimax(board, depth-1, False)
+                score, _ = self._minimax(board, depth-1, False, alpha, beta)
                 board.grid[x][y] = None
-                max_score = max(score, max_score)
-            return max_score
+            
+                if score > max_score:
+                    max_score = score
+                    best_move = move
+                alpha = max(alpha, score)
+                if beta <= alpha:
+                    break
+            return max_score, best_move
         else:
             min_score = float('inf')
             for move in valid_moves:
                 x, y = move
                 board.grid[x][y] = 'X'
-                score = self._minimax(board, depth-1, True)
+                score, _ = self._minimax(board, depth-1, True, alpha, beta)
                 board.grid[x][y] = None
-                min_score = min(score, min_score)
-            return min_score
+            
+                if score < min_score:
+                    min_score = score
+                    best_move = move
+                beta = min(beta, score)
+                if beta <= alpha:
+                    break
+            return min_score, best_move
 
 
     def _evaluate_board(self, board):

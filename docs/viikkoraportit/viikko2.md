@@ -4,7 +4,7 @@ Tekoäly tunnistaa tällä hetkellä 5 perusmallia. Arviointifunktio ja hakukehi
 
 Testaus jäi vähälle ajanpuutteen vuoksi. Keskityin vain laudan toiminnan testaamiseen.
 
-Ensi viikolla keskityn tekoälyn strategia-algoritmien optimointiin, kuten alpha-beta pruning ja heuristisen haun lisäämiseen. Laajennan myös testejä. Tällä hetkellä uskon, että lisättävät testit voivat olla voiton määrittämisen testejä ja tekoälytoimintojen testejä. Minulla ei ole tällä hetkellä vahvoja ajatuksia tai ajatuksia tästä. Toivon saavansa ohjetta.
+Ensi viikolla keskityn tekoälyn strategia-algoritmien optimointiin, kuten alpha-beta pruning ja heuristisen haun lisäämiseen. Laajennan myös testejä. Tällä hetkellä uskon, että lisättävät testit voivat olla voiton määrittämisen testejä ja tekoälytoimintojen testejä. Minulla ei ole tällä hetkellä vahvoja ajatuksia tästä. Toivon saavansa ohjetta.
 
 Työaikaa kului noin 17 tuntia tällä viikolla. Tuntikirjanpito on liitteenä.
 | Päivä | Käytetty aika | Kuvaus |

@@ -11,9 +11,9 @@ class GomokuGame:
         if self.board.make_move(x, y, self.current_player):
             if self.board.check_win():
                 return self.current_player
-            if self.current_player == 'X': # X is player, O is AI
-                self.current_player = 'O' 
-                ai_move = self.ai.get_next_move(self.board)
+            if self.current_player == 'X':  # X is player, O is AI
+                self.current_player = 'O'
+                _, ai_move = self.ai._minimax(self.board, self.ai.search_depth, True)
                 if ai_move:
                     return self.play_turn(*ai_move)
             else:
