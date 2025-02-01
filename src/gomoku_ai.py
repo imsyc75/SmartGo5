@@ -13,24 +13,42 @@ class GomokuAI:
         # High-value chess patterns will strongly influence the AI's choice, giving priority to forming or defending high-value chess patterns.
         
 
-    def _get_valid_moves(self, board): 
+    def _get_valid_moves(self, board):
         valid_moves = set()
-        directions = [(-1, 0),(1, 0),
-                      (0, -1), (0, 1),
-                      (-1, 1), (1, -1),
-                      (-1, -1), (1, 1)]  
-        
-        for x in range(self.board_size): 
-            for y in range(self.board_size):
-                if board.grid[x][y] is not None:
-                    for dx, dy in directions:
-                        new_x, new_y = x + dx, y + dy
-                        if (0 <= new_x < self.board_size and 
-                            0 <= new_y < self.board_size and 
-                            board.grid[new_x][new_y] is None):
-                            valid_moves.add((new_x, new_y))
-                            
-        return valid_moves if valid_moves else board.available_moves
+        x, y = board.last_move  
+    
+        search_radius = 2  
+    
+        start_x = max(0, x - search_radius)
+        end_x = min(self.board_size, x + search_radius + 1)
+        start_y = max(0, y - search_radius)
+        end_y = min(self.board_size, y + search_radius + 1)
+    
+        for i in range(start_x, end_x):
+            for j in range(start_y, end_y):
+                if board.grid[i][j] is None:  
+                    has_neighbor = False
+                    for dx in [-1, 0, 1]:
+                        for dy in [-1, 0, 1]:
+                            if dx == 0 and dy == 0:
+                                continue
+                            ni, nj = i + dx, j + dy
+                            if (0 <= ni < self.board_size and 
+                                0 <= nj < self.board_size and 
+                                board.grid[ni][nj] is not None):
+                                has_neighbor = True
+                                break
+                        if has_neighbor:
+                            break
+                    if has_neighbor:
+                        valid_moves.add((i, j))
+    
+        if not valid_moves:  
+        # If no valid moves are found, the search radius is increased to 4 and the search is repeated.
+            search_radius *= 2
+            return self._get_valid_moves(board)
+    
+        return valid_moves
 
     
     def _minimax(self, board, depth, is_maximizing, alpha=-float('inf'), beta=float('inf')):
