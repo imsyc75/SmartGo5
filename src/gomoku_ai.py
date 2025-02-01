@@ -1,16 +1,18 @@
 class GomokuAI:
-    def __init__(self, board_size=20, search_depth=2):
+    def __init__(self, board_size=20, search_depth=4):
         self.board_size = board_size
         self.search_depth = search_depth
         # These numbers represent the threat value of different chess patterns. 
         self.pattern_scores = {
             'win5': 50000,    
-            'open4': 4300,   
-            'simple4': 700,     
-            'open3': 7200,   
-            'broken3': 100, 
+            'open4': 10000,   
+            'simple4': 5000,     
+            'open3': 2000,   
+            'broken3': 500, 
+            'open2': 100,
+            'broken2': 50
         } 
-        # High-value chess patterns will strongly influence the AI's choice, giving priority to forming or defending high-value chess patterns.
+    
         
 
     def _get_valid_moves(self, board):
@@ -155,5 +157,28 @@ class GomokuAI:
                     f'.{player}{player}.{player}.']
         for pattern in pat_broken3:
             score += line.count(pattern) * self.pattern_scores['broken3']
-            
+        
+        #open2
+        if f'...{player}{player}...' in line:
+            score += self.pattern_scores['open2']
+
+        #broken2
+        pat_broken2 = [f'..{player}{player}..',
+                    f'.{player}{player}..',
+                    f'..{player}{player}.']
+        for pattern in pat_broken2:
+            score += line.count(pattern) * self.pattern_scores['broken2']
+    
+        if f'.{opponent}{opponent}{opponent}{opponent}.' in line:
+            score -= self.pattern_scores['open4'] * 2  
+        for pattern in [f'{opponent}{opponent}{opponent}{opponent}.', 
+                        f'.{opponent}{opponent}{opponent}{opponent}',
+                        f'{opponent}{opponent}.{opponent}{opponent}']:
+            score -= line.count(pattern) * self.pattern_scores['simple4'] * 1.5
+        #Analyzing the threat of opponent pieces at diagonal angles
+        if f'..{opponent}{opponent}{opponent}.' in line:  
+            score -= self.pattern_scores['open3'] * 1.5  
+        if f'.{opponent}{opponent}{opponent}.' in line:  
+            score -= self.pattern_scores['simple4'] * 2 
+
         return score
