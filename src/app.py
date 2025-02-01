@@ -17,7 +17,7 @@ class GomokuGame:
                     center = self.board.size // 2
                     return self.play_turn(center, center)
                 
-                _, ai_move = self.ai._minimax(self.board, self.ai.search_depth, True)
+                _, ai_move = self.ai.minimax(self.board, self.ai.search_depth, True)
                 if ai_move:
                     return self.play_turn(*ai_move)
             else:
