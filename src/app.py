@@ -13,6 +13,10 @@ class GomokuGame:
                 return self.current_player
             if self.current_player == 'X':  # X is player, O is AI
                 self.current_player = 'O'
+                if not self.board.last_move:
+                    center = self.board.size // 2
+                    return self.play_turn(center, center)
+                
                 _, ai_move = self.ai._minimax(self.board, self.ai.search_depth, True)
                 if ai_move:
                     return self.play_turn(*ai_move)

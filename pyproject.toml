@@ -4,6 +4,9 @@ version = "0.1.0"
 description = ""
 authors = ["imsyc75 <songyuchen2003@hotmail.com>"]
 readme = "README.md"
+packages = [
+    { include = "src" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -13,7 +16,7 @@ pygame = "^2.6.1"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.3.3"
-unittest = "^3.0.1"
+coverage = "^7.6.10"
 
 [build-system]
 requires = ["poetry-core"]
