@@ -6,17 +6,19 @@ class GomokuGame:
         self.board = Board(board_size)
         self.current_player = 'X'
         self.ai = GomokuAI(board_size)
-    
+        self.ai.candidate_moves = {(board_size//2, board_size//2)}
+
     def play_turn(self, x, y):
         if self.board.make_move(x, y, self.current_player):
-            if self.board.check_win():
+            self.ai.update_candidate_moves(self.board, (x, y))
+            
+            if self.ai.check_win(self.board, (x, y)):
                 return self.current_player
+                
             if self.current_player == 'X':  # X is player, O is AI
                 self.current_player = 'O'
-                if not self.board.last_move:
-                    center = self.board.size // 2
-                    return self.play_turn(center, center)
                 
+                # AI moves
                 _, ai_move = self.ai.minimax(self.board, self.ai.search_depth, True)
                 if ai_move:
                     return self.play_turn(*ai_move)

@@ -4,6 +4,7 @@ class GomokuAI:
     def __init__(self, board_size=20, search_depth=4):
         self.board_size = board_size
         self.search_depth = search_depth
+        self.candidate_moves = set()
         self.pattern_scores = {
             'win5': 50000,    
             'open4': 10000,   
@@ -14,6 +15,16 @@ class GomokuAI:
             'broken2': 50
         }
 
+    def update_candidate_moves(self, board, move):
+        x, y = move
+        self.candidate_moves.discard((x, y))
+        
+        # Add an empty space within 2 spaces around
+        for i in range(max(0, x-2), min(self.board_size, x+3)):
+            for j in range(max(0, y-2), min(self.board_size, y+3)):
+                if board.grid[i][j] is None:
+                    self.candidate_moves.add((i, j))
+                    
     def get_vectors(self, board):
         vectors = []
         
@@ -50,43 +61,46 @@ class GomokuAI:
             
         return vectors
 
-    def has_neighbor(self, board, x, y, distance=2):
-        #Check if there are chess pieces around the specified position
-        start_x = max(0, x - distance)
-        end_x = min(self.board_size, x + distance + 1)
-        start_y = max(0, y - distance)
-        end_y = min(self.board_size, y + distance + 1)
-        
-        return any(board.grid[i][j] is not None 
-                  for i in range(start_x, end_x)
-                  for j in range(start_y, end_y)
-                  if (i != x or j != y))
-
     def get_valid_moves(self, board):
         valid_moves = set()
         last_x, last_y = board.last_move if board.last_move else (self.board_size//2, self.board_size//2)
         
-        #Prioritize searching the positions around the last move
-        search_radius = 2
-        start_x = max(0, last_x - search_radius)
-        end_x = min(self.board_size, last_x + search_radius + 1)
-        start_y = max(0, last_y - search_radius)
-        end_y = min(self.board_size, last_y + search_radius + 1)
+        last_x, last_y = board.last_move
+        priority_moves = set()
         
-        for i in range(start_x, end_x):
-            for j in range(start_y, end_y):
-                if board.grid[i][j] is None and self.has_neighbor(board, i, j):
-                    valid_moves.add((i, j))
-                    
-        if not valid_moves:
-            #If no suitable move is found, expand the search range
-            for i in range(self.board_size):
-                for j in range(self.board_size):
-                    if board.grid[i][j] is None and self.has_neighbor(board, i, j, 3):
-                        valid_moves.add((i, j))
-                        
-        return valid_moves if valid_moves else {(self.board_size//2, self.board_size//2)}
-
+        # 检查最后一步移动的邻近位置（1格范围内）
+        for i in range(max(0, last_x-1), min(self.board_size, last_x+2)):
+            for j in range(max(0, last_y-1), min(self.board_size, last_y+2)):
+                if board.grid[i][j] is None and (i, j) in self.candidate_moves:
+                    priority_moves.add((i, j))
+        
+        if priority_moves:
+            return priority_moves
+            
+        return self.candidate_moves
+    
+    def check_win(self, board, last_move): #Only check the lines related to the last move
+        if not last_move:
+            return False
+            
+        x, y = last_move
+        player = board.grid[x][y]
+        directions = [(1,0), (0,1), (1,1), (1,-1)] 
+        
+        for dx, dy in directions:
+            count = 1  
+            for direction in [-1, 1]:
+                nx, ny = x + dx * direction, y + dy * direction
+                while (0 <= nx < self.board_size and 
+                       0 <= ny < self.board_size and 
+                       board.grid[nx][ny] == player):
+                    count += 1
+                    if count >= 5:
+                        return True
+                    nx += dx * direction
+                    ny += dy * direction
+        return False
+    
     def evaluate_vector(self, vector, player):
         score = 0
         vector_str = ''.join(['.' if x is None else x for x in vector])
@@ -149,19 +163,33 @@ class GomokuAI:
         return ai_score - opponent_score
 
     def minimax(self, board, depth, is_maximizing, alpha=-float('inf'), beta=float('inf')):
-        if depth == 0 or board.check_win():
+        if depth == 0 or self.check_win(board, board.last_move):
             return self.evaluate_board(board), None
             
         valid_moves = self.get_valid_moves(board)
         best_move = None
+        
+        if board.last_move:
+            last_x, last_y = board.last_move
+            valid_moves = sorted(valid_moves, 
+                               key=lambda m: abs(m[0]-last_x) + abs(m[1]-last_y))
         
         if is_maximizing:
             max_score = float('-inf')
             for move in valid_moves:
                 x, y = move
                 board.grid[x][y] = 'O'
+                old_last_move = board.last_move
+                board.last_move = (x, y)
+                
+                old_candidates = self.candidate_moves.copy()
+                self.update_candidate_moves(board, move)
+                
                 score, _ = self.minimax(board, depth-1, False, alpha, beta)
+                
                 board.grid[x][y] = None
+                board.last_move = old_last_move
+                self.candidate_moves = old_candidates
                 
                 if score > max_score:
                     max_score = score
@@ -175,8 +203,17 @@ class GomokuAI:
             for move in valid_moves:
                 x, y = move
                 board.grid[x][y] = 'X'
+                old_last_move = board.last_move
+                board.last_move = (x, y)
+                
+                old_candidates = self.candidate_moves.copy()
+                self.update_candidate_moves(board, move)
+                
                 score, _ = self.minimax(board, depth-1, True, alpha, beta)
+                
                 board.grid[x][y] = None
+                board.last_move = old_last_move
+                self.candidate_moves = old_candidates
                 
                 if score < min_score:
                     min_score = score
