@@ -6,7 +6,7 @@ class GomokuGame:
         self.board = Board(board_size)
         self.current_player = 'X'
         self.ai = GomokuAI(board_size)
-        self.ai.candidate_moves = {(board_size//2, board_size//2)}
+        self.ai.candidate_moves = [(board_size//2, board_size//2)]  
 
     def play_turn(self, x, y):
         if self.board.make_move(x, y, self.current_player):

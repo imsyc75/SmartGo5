@@ -1,10 +1,8 @@
-# code design based on https://github.com/ZitongMao/gomoku-ai/blob/aeca9f0a52ec7f2b81faad441d846b33c9dc9049/gomoku_ai.py
-
 class GomokuAI:
     def __init__(self, board_size=20, search_depth=4):
         self.board_size = board_size
         self.search_depth = search_depth
-        self.candidate_moves = set()
+        self.candidate_moves = []
         self.pattern_scores = {
             'win5': 50000,    
             'open4': 10000,   
@@ -17,14 +15,15 @@ class GomokuAI:
 
     def update_candidate_moves(self, board, move):
         x, y = move
-        self.candidate_moves.discard((x, y))
+        if (x, y) in self.candidate_moves:
+            self.candidate_moves.remove((x, y)) 
         
         # Add an empty space within 2 spaces around
         for i in range(max(0, x-2), min(self.board_size, x+3)):
             for j in range(max(0, y-2), min(self.board_size, y+3)):
-                if board.grid[i][j] is None:
-                    self.candidate_moves.add((i, j))
-                    
+                if board.grid[i][j] is None and (i, j) not in self.candidate_moves:
+                    self.candidate_moves.append((i, j)) 
+
     def get_vectors(self, board):
         vectors = []
         
@@ -62,17 +61,16 @@ class GomokuAI:
         return vectors
 
     def get_valid_moves(self, board):
-        valid_moves = set()
+        valid_moves = []
         last_x, last_y = board.last_move if board.last_move else (self.board_size//2, self.board_size//2)
         
         last_x, last_y = board.last_move
-        priority_moves = set()
+        priority_moves = []
         
-        # 检查最后一步移动的邻近位置（1格范围内）
         for i in range(max(0, last_x-1), min(self.board_size, last_x+2)):
             for j in range(max(0, last_y-1), min(self.board_size, last_y+2)):
                 if board.grid[i][j] is None and (i, j) in self.candidate_moves:
-                    priority_moves.add((i, j))
+                    priority_moves.append((i, j)) 
         
         if priority_moves:
             return priority_moves
@@ -163,16 +161,23 @@ class GomokuAI:
         return ai_score - opponent_score
 
     def minimax(self, board, depth, is_maximizing, alpha=-float('inf'), beta=float('inf')):
-        if depth == 0 or self.check_win(board, board.last_move):
-            return self.evaluate_board(board), None
+        if self.check_win(board, board.last_move):
+            if is_maximizing:
+                return -1000000, None
+            else:
+                return 1000000, None
             
+        if depth == 0:
+            return self.evaluate_board(board), None
+        
         valid_moves = self.get_valid_moves(board)
         best_move = None
         
         if board.last_move:
             last_x, last_y = board.last_move
             valid_moves = sorted(valid_moves, 
-                               key=lambda m: abs(m[0]-last_x) + abs(m[1]-last_y))
+                               key=lambda m: abs(m[0]-last_x) + abs(m[1]-last_y)) 
+        
         
         if is_maximizing:
             max_score = float('-inf')
@@ -182,6 +187,7 @@ class GomokuAI:
                 old_last_move = board.last_move
                 board.last_move = (x, y)
                 
+                #关注一下这里之后的代码。
                 old_candidates = self.candidate_moves.copy()
                 self.update_candidate_moves(board, move)
                 
