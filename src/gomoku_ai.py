@@ -4,9 +4,9 @@ class GomokuAI:
         self.search_depth = search_depth
         self.candidate_moves = []
         self.pattern_scores = {
-            'win5': 50000,    
-            'open4': 10000,   
-            'simple4': 5000,     
+            'win5': 500000000,    
+            'open4': 100000,   
+            'simple4': 20000,     
             'open3': 2000,   
             'broken3': 500, 
             'open2': 100,
@@ -61,9 +61,6 @@ class GomokuAI:
         return vectors
 
     def get_valid_moves(self, board):
-        valid_moves = []
-        last_x, last_y = board.last_move if board.last_move else (self.board_size//2, self.board_size//2)
-        
         last_x, last_y = board.last_move
         priority_moves = []
         
@@ -140,17 +137,17 @@ class GomokuAI:
             
         # Adversary Threat Assessment
         if f'.{opponent}{opponent}{opponent}{opponent}.' in vector_str:
-            score -= self.pattern_scores['open4'] * 2
+            score -= self.pattern_scores['open4'] * 1.2
           
         for pattern in [f'{opponent}{opponent}{opponent}{opponent}.', 
                        f'.{opponent}{opponent}{opponent}{opponent}',
                        f'{opponent}{opponent}.{opponent}{opponent}']:
-            score -= vector_str.count(pattern) * self.pattern_scores['simple4'] * 1.5
+            score -= vector_str.count(pattern) * self.pattern_scores['simple4'] * 1.2
         
         for pattern in [f'..{opponent}{opponent}{opponent}..',
                        f'.{opponent}.{opponent}{opponent}.',
                        f'.{opponent}{opponent}.{opponent}.']:
-            score -= vector_str.count(pattern) * self.pattern_scores['open3'] * 1.2
+            score -= vector_str.count(pattern) * self.pattern_scores['open3']
             
         return score
     
@@ -163,9 +160,9 @@ class GomokuAI:
     def minimax(self, board, depth, is_maximizing, alpha=-float('inf'), beta=float('inf')):
         if self.check_win(board, board.last_move):
             if is_maximizing:
-                return -1000000, None
+                return -1000000 + depth*1000, None
             else:
-                return 1000000, None
+                return 1000000 - depth*1000, None
             
         if depth == 0:
             return self.evaluate_board(board), None
@@ -187,7 +184,6 @@ class GomokuAI:
                 old_last_move = board.last_move
                 board.last_move = (x, y)
                 
-                #关注一下这里之后的代码。
                 old_candidates = self.candidate_moves.copy()
                 self.update_candidate_moves(board, move)
                 
