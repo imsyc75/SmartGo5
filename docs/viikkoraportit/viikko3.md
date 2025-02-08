@@ -11,4 +11,4 @@ Työaikaa kului noin 9 tuntia tällä viikolla. Tuntikirjanpito on liitteenä.
 | 28.1.  | 1 h            | keskustelu Hannun kanssa|
 | 31.1.  | 4 h            | AI kehitys |
 | 1.2.  | 4 h            | AI kehitys + testaus |
-| Yhteensä | 17 h         |  |
+| Yhteensä | 9 h         |  |
