@@ -7,9 +7,9 @@ Ensi viikolla keskitytään testien kehittämiseen Ohjaustilaisuus Testauksesta 
 Työaikaa kului noin 10 tuntia tällä viikolla. Tuntikirjanpito on liitteenä.
 | Päivä | Käytetty aika | Kuvaus |
 | ----- | ------------- | ------ |
-| 3.2.  | 1 h            | siirtojen generoinnin kehittäminen |
+| 3.2.  | 2 h            | siirtojen generoinnin kehittäminen |
 | 4.2.  | 2 h            | siirtojen generoinnin kehittäminen |
 | 5.2.  | 2 h            | keskustelu Hannun kanssa |
 | 7.2.  | 2 h            | AI kehitys |
-| 8.2.  | 3 h            | AI kehitys |
+| 8.2.  | 2 h            | AI kehitys |
 | Yhteensä | 10 h         |  |
