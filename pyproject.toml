@@ -4,14 +4,13 @@ version = "0.1.0"
 description = ""
 authors = ["imsyc75 <songyuchen2003@hotmail.com>"]
 readme = "README.md"
-packages = [
-    { include = "src" }
-]
+packages = [{ include = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 numpy = "^2.2.1"
 pygame = "^2.6.1"
+pytest = "^8.3.4"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -21,3 +20,7 @@ coverage = "^7.6.10"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest]
+pythonpath = ["src"]
+testpaths = ["src/tests"]

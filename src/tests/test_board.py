@@ -1,5 +1,5 @@
 import unittest
-from gomoku import Board
+from ..gomoku import Board
 
 class TestBoard(unittest.TestCase):
     def setUp(self):

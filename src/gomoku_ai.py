@@ -160,10 +160,10 @@ class GomokuAI:
     def minimax(self, board, depth, is_maximizing, alpha=-float('inf'), beta=float('inf')):
         if self.check_win(board, board.last_move):
             if is_maximizing:
-                return -1000000 + depth*1000, None
-            else:
-                return 1000000 - depth*1000, None
-            
+                return -float('inf'), None
+        else:
+            return float('inf'), None    
+        
         if depth == 0:
             return self.evaluate_board(board), None
         
@@ -183,7 +183,7 @@ class GomokuAI:
                 board.grid[x][y] = 'O'
                 old_last_move = board.last_move
                 board.last_move = (x, y)
-                
+
                 old_candidates = self.candidate_moves.copy()
                 self.update_candidate_moves(board, move)
                 
@@ -207,7 +207,7 @@ class GomokuAI:
                 board.grid[x][y] = 'X'
                 old_last_move = board.last_move
                 board.last_move = (x, y)
-                
+
                 old_candidates = self.candidate_moves.copy()
                 self.update_candidate_moves(board, move)
                 

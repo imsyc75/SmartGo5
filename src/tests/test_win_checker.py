@@ -1,5 +1,5 @@
 import unittest
-from gomoku import Board, WinChecker
+from ..gomoku import Board, WinChecker
 
 class TestWinChecker(unittest.TestCase):
     def setUp(self):

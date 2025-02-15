@@ -1,5 +1,5 @@
-from gomoku import Board
-from gomoku_ai import GomokuAI
+from .gomoku import Board
+from .gomoku_ai import GomokuAI
 
 class GomokuGame:
     def __init__(self, board_size=20):
