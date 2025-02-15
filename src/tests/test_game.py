@@ -13,7 +13,7 @@ class TestGomokuGame(unittest.TestCase):
     def test_player_turn_sequence(self):
         result = self.game.play_turn(3, 4)
         self.assertIsNone(result)  # No win
-        self.assertEqual(self.game.current_player, 'O')  # AI's turn
+        self.assertEqual(self.game.current_player, 'X')  # After AI playing, its player.
     
     def test_win_detection(self):
         #Check if player 'X' wins are correctly detected after step 5

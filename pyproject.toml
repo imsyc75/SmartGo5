@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["imsyc75 <songyuchen2003@hotmail.com>"]
 readme = "README.md"
-packages = [{ include = "src" }]
+packages = [{ include = "src", from = "." }] 
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -21,6 +21,6 @@ coverage = "^7.6.10"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.pytest]
+[tool.pytest.ini_options] 
 pythonpath = ["src"]
 testpaths = ["src/tests"]
