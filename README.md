@@ -9,6 +9,7 @@ This project is an implementation of Gomoku AI as part of the Data Structures an
 [Viikko 2](docs/viikkoraportit/viikko2.md)
 [Viikko 3](docs/viikkoraportit/viikko3.md)
 [Viikko 4](docs/viikkoraportit/viikko4.md)
+[Viikko 5](docs/viikkoraportit/viikko5.md)
 
 ## User's instruction
 After cloning the repository to your own machine, start poetry in the project root directory using the following command
@@ -27,7 +28,7 @@ Run the game
 poetry run python3 src/ui.py
 ```
 
-
-## References
-https://sortingsearching.com/2020/05/18/gomoku.html
-https://en.wikipedia.org/wiki/Minimax
+Test
+```bash
+poetry run pytest
+```
