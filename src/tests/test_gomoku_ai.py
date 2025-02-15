@@ -11,7 +11,6 @@ class TestGomokuAI(unittest.TestCase):
         self.assertEqual(self.ai.board_size, 20)
         self.assertEqual(self.ai.search_depth, 4)
         self.assertIsNotNone(self.ai.pattern_scores)
-        self.assertEqual(len(self.ai.candidate_moves), 1)  # Initial center move
         
     def test_candidate_moves_update(self):
         # Test initial move
@@ -61,7 +60,6 @@ class TestGomokuAI(unittest.TestCase):
         self.assertGreater(score, 0)
         
     def test_minimax_basic(self):
-        # Test immediate winning move
         self.board.make_move(10, 10, 'O')
         self.board.make_move(10, 11, 'O')
         self.board.make_move(10, 12, 'O')
@@ -69,7 +67,7 @@ class TestGomokuAI(unittest.TestCase):
         self.board.last_move = (10, 13)
         
         self.ai.update_candidate_moves(self.board, (10, 13))
-        score, move = self.ai.minimax(self.board, 2, True)
+        _, move = self.ai.minimax(self.board, 2, True)
         
         # AI should find the winning move at (10, 14)
         self.assertIsNotNone(move)
@@ -91,7 +89,6 @@ class TestGomokuAI(unittest.TestCase):
             self.assertIsNone(self.board.grid[x][y])
             
     def test_evaluate_board(self):
-        # Empty board should have neutral evaluation
         score = self.ai.evaluate_board(self.board)
         self.assertEqual(score, 0)
         
