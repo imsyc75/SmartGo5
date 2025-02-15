@@ -160,9 +160,9 @@ class GomokuAI:
     def minimax(self, board, depth, is_maximizing, alpha=-float('inf'), beta=float('inf')):
         if self.check_win(board, board.last_move):
             if is_maximizing:
-                return -float('inf'), None
-        else:
-            return float('inf'), None    
+                return -9999999999, None
+            else:
+                return 9999999999, None    
         
         if depth == 0:
             return self.evaluate_board(board), None
