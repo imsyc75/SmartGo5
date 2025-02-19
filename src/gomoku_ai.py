@@ -1,8 +1,9 @@
+from gomoku import Board
+
 class GomokuAI:
-    def __init__(self, board_size=20, search_depth=4):
+    def __init__(self, board_size=20, search_depth=3):
         self.board_size = board_size
         self.search_depth = search_depth
-        self.candidate_moves = []
         self.pattern_scores = {
             'win5': 500000000,    
             'open4': 100000,   
@@ -13,16 +14,15 @@ class GomokuAI:
             'broken2': 50
         }
 
-    def update_candidate_moves(self, board, move):
+    def update_candidate_moves(self, board, move, moves):
         x, y = move
-        if (x, y) in self.candidate_moves:
-            self.candidate_moves.remove((x, y)) 
-        
         # Add an empty space within 2 spaces around
         for i in range(max(0, x-2), min(self.board_size, x+3)):
             for j in range(max(0, y-2), min(self.board_size, y+3)):
-                if board.grid[i][j] is None and (i, j) not in self.candidate_moves:
-                    self.candidate_moves.append((i, j)) 
+                if board.grid[i][j] is None:
+                    if (i, j) in moves:
+                        moves.remove((i, j))
+                    moves.append((i, j)) 
 
     def get_vectors(self, board):
         vectors = []
@@ -59,48 +59,12 @@ class GomokuAI:
                 vectors.append(diagonal)
             
         return vectors
-
-    def get_valid_moves(self, board):
-        last_x, last_y = board.last_move
-        priority_moves = []
-        
-        for i in range(max(0, last_x-1), min(self.board_size, last_x+2)):
-            for j in range(max(0, last_y-1), min(self.board_size, last_y+2)):
-                if board.grid[i][j] is None and (i, j) in self.candidate_moves:
-                    priority_moves.append((i, j)) 
-        
-        if priority_moves:
-            return priority_moves
-            
-        return self.candidate_moves
-    
-    def check_win(self, board, last_move): #Only check the lines related to the last move
-        if not last_move:
-            return False
-            
-        x, y = last_move
-        player = board.grid[x][y]
-        directions = [(1,0), (0,1), (1,1), (1,-1)] 
-        
-        for dx, dy in directions:
-            count = 1  
-            for direction in [-1, 1]:
-                nx, ny = x + dx * direction, y + dy * direction
-                while (0 <= nx < self.board_size and 
-                       0 <= ny < self.board_size and 
-                       board.grid[nx][ny] == player):
-                    count += 1
-                    if count >= 5:
-                        return True
-                    nx += dx * direction
-                    ny += dy * direction
-        return False
     
     def evaluate_vector(self, vector, player):
         score = 0
         vector_str = ''.join(['.' if x is None else x for x in vector])
         opponent = 'X' if player == 'O' else 'O'
-        
+            
         if f'{player}{player}{player}{player}{player}' in vector_str:
             score += self.pattern_scores['win5']
         
@@ -156,42 +120,61 @@ class GomokuAI:
         ai_score = sum(self.evaluate_vector(v, 'O') for v in vectors)
         opponent_score = sum(self.evaluate_vector(v, 'X') for v in vectors)
         return ai_score - opponent_score
+    
+    def debug_evaluate_position(self, board):
+        print("\n=== Debug: Evaluating Current Position ===")
+        vectors = self.get_vectors(board)
+        print(f"Total vectors found: {len(vectors)}")
+        
+        # 特别关注含有四连子的向量
+        for i, vector in enumerate(vectors):
+            vector_str = ''.join(['.' if x is None else x for x in vector])
+            if 'OOOO' in vector_str:
+                print(f"\nFound vector {i} with four O's:")
+                print(f"Vector content: {vector_str}")
+                score = self.evaluate_vector(vector, 'O')
+                print(f"Vector score: {score}")
+                
+        # 打印当前局面的总评分
+        total_score = self.evaluate_board(board)
+        print(f"\nTotal board evaluation score: {total_score}")
 
-    def minimax(self, board, depth, is_maximizing, alpha=-float('inf'), beta=float('inf')):
-        if self.check_win(board, board.last_move):
+    def minimax(self, board, depth, is_maximizing, moves, alpha=-float('inf'), beta=float('inf')):
+        # Debug
+        is_top_level = depth == self.search_depth
+
+        if board.check_win():
             if is_maximizing:
                 return -9999999999, None
             else:
                 return 9999999999, None    
         
         if depth == 0:
-            return self.evaluate_board(board), None
+            score = self.evaluate_board(board)
+            if is_top_level: #debug
+                print(f"Leaf node evaluation: {score}")
+            return score, None
         
-        valid_moves = self.get_valid_moves(board)
         best_move = None
-        
-        if board.last_move:
-            last_x, last_y = board.last_move
-            valid_moves = sorted(valid_moves, 
-                               key=lambda m: abs(m[0]-last_x) + abs(m[1]-last_y)) 
-        
         
         if is_maximizing:
             max_score = float('-inf')
-            for move in valid_moves:
+            for move in moves:
                 x, y = move
                 board.grid[x][y] = 'O'
                 old_last_move = board.last_move
                 board.last_move = (x, y)
 
-                old_candidates = self.candidate_moves.copy()
-                self.update_candidate_moves(board, move)
+                new_moves = moves.copy()
+                new_moves.remove(move)
+                self.update_candidate_moves(board, move, new_moves)
                 
-                score, _ = self.minimax(board, depth-1, False, alpha, beta)
-                
+                score, _ = self.minimax(board, depth-1, False, new_moves, alpha, beta)
+                if is_top_level: #debug
+                    print(f"Move {move} score: {score}")
+
                 board.grid[x][y] = None
                 board.last_move = old_last_move
-                self.candidate_moves = old_candidates
                 
                 if score > max_score:
                     max_score = score
@@ -202,20 +185,22 @@ class GomokuAI:
             return max_score, best_move
         else:
             min_score = float('inf')
-            for move in valid_moves:
+            for move in moves:
                 x, y = move
                 board.grid[x][y] = 'X'
                 old_last_move = board.last_move
                 board.last_move = (x, y)
 
-                old_candidates = self.candidate_moves.copy()
-                self.update_candidate_moves(board, move)
+                new_moves = moves.copy()
+                new_moves.remove(move)
+                self.update_candidate_moves(board, move, new_moves)
                 
-                score, _ = self.minimax(board, depth-1, True, alpha, beta)
-                
+                score, _ = self.minimax(board, depth-1, True, new_moves, alpha, beta)
+                if is_top_level:#debug
+                    print(f"Move {move} score: {score}")
+
                 board.grid[x][y] = None
                 board.last_move = old_last_move
-                self.candidate_moves = old_candidates
                 
                 if score < min_score:
                     min_score = score

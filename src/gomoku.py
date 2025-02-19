@@ -5,7 +5,6 @@ class Board:
     def __init__(self, size=20):
         self.size = size
         self.grid = [[None] * size for _ in range(size)]
-        self.move_manager = MoveManager(size)
         self.win_checker = WinChecker(size)
         self.available_moves = set((i, j) for i in range(size) for j in range(size))
         self.last_move = None
@@ -20,20 +19,14 @@ class Board:
     
     def check_win(self):
             return self.win_checker.check_win(self, self.last_move)
-  
-        
-class MoveManager:
-    def __init__(self, board_size):
-        self.board_size = board_size
 
 
 class WinChecker:
-    def __init__(self, board_size=20, win_count=5):
+    def __init__(self, board_size=20):
         self.board_size = board_size
-        self.win_count = win_count
         # four directions: horizontal, vertical, two diagonals
-        self.directions = [[(-1, 0),(1, 0)],
-                           [(0, -1), (0, 1)],
+        self.directions = [[(-1, 0),(1, 0)], # up and down
+                           [(0, -1), (0, 1)], # left and right
                            [(-1, 1), (1, -1)],
                            [(-1, -1), (1, 1)]]  
 
