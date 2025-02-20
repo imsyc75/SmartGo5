@@ -121,12 +121,11 @@ class GomokuAI:
         opponent_score = sum(self.evaluate_vector(v, 'X') for v in vectors)
         return ai_score - opponent_score
     
-    def debug_evaluate_position(self, board):
+    def debug_evaluate_position(self, board):#Debug
         print("\n=== Debug: Evaluating Current Position ===")
         vectors = self.get_vectors(board)
         print(f"Total vectors found: {len(vectors)}")
         
-        # 特别关注含有四连子的向量
         for i, vector in enumerate(vectors):
             vector_str = ''.join(['.' if x is None else x for x in vector])
             if 'OOOO' in vector_str:
@@ -135,7 +134,6 @@ class GomokuAI:
                 score = self.evaluate_vector(vector, 'O')
                 print(f"Vector score: {score}")
                 
-        # 打印当前局面的总评分
         total_score = self.evaluate_board(board)
         print(f"\nTotal board evaluation score: {total_score}")
 
@@ -164,6 +162,9 @@ class GomokuAI:
                 board.grid[x][y] = 'O'
                 old_last_move = board.last_move
                 board.last_move = (x, y)
+                # Debug: 打印模拟落子位置和上一步位置
+                if is_top_level:
+                    print(f"simulation: {(x, y)}, lastmove: {old_last_move}")
 
                 new_moves = moves.copy()
                 new_moves.remove(move)
@@ -190,6 +191,9 @@ class GomokuAI:
                 board.grid[x][y] = 'X'
                 old_last_move = board.last_move
                 board.last_move = (x, y)
+                # Debug: 打印模拟落子位置和上一步位置
+                if is_top_level:
+                    print(f"simulation: {(x, y)}, lastmove: {old_last_move}")
 
                 new_moves = moves.copy()
                 new_moves.remove(move)
