@@ -3,6 +3,8 @@ This project is an implementation of Gomoku AI as part of the Data Structures an
 
 ## Documentation
 [Määrittelydokumentti](docs/maarittelydokumentti.md)
+[Testausdokumentti](docs/testausdokumentti.md)
+[Toteusdokumentti](docs/toteu6dokumentti.md)
 
 ## Week report
 [Viikko 1](docs/viikkoraportit/viikko1.md)
@@ -10,6 +12,7 @@ This project is an implementation of Gomoku AI as part of the Data Structures an
 [Viikko 3](docs/viikkoraportit/viikko3.md)
 [Viikko 4](docs/viikkoraportit/viikko4.md)
 [Viikko 5](docs/viikkoraportit/viikko5.md)
+[Viikko 6](docs/viikkoraportit/viikko6.md)
 
 ## User's instruction
 After cloning the repository to your own machine, start poetry in the project root directory using the following command
