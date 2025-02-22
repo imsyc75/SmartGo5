@@ -155,14 +155,15 @@ class GomokuAI:
         
         best_move = None
         
-        if is_maximizing:
+        if is_maximizing:#AI's turn
             max_score = float('-inf')
             for move in moves:
                 x, y = move
                 board.grid[x][y] = 'O'
                 old_last_move = board.last_move
                 board.last_move = (x, y)
-                # Debug: 打印模拟落子位置和上一步位置
+
+                # Debug:
                 if is_top_level:
                     print(f"simulation: {(x, y)}, lastmove: {old_last_move}")
 

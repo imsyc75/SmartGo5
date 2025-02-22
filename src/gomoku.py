@@ -29,12 +29,28 @@ class WinChecker:
                            [(0, -1), (0, 1)], # left and right
                            [(-1, 1), (1, -1)],
                            [(-1, -1), (1, 1)]]  
+        
 
+    def print_board(self, board):# debug
+        print("\n=== Current Board State ===")
+        for row in range(self.board_size):
+            row_str = []
+            for col in range(self.board_size):
+                piece = board.grid[col][row]
+                if piece is None:
+                    row_str.append('.')
+                else:
+                    row_str.append(piece)
+            print(' '.join(row_str))
+        print("==========================\n")
+
+    
     def check_win(self, board, last_move):
         if not last_move:
             return False
-            
-        x, y = last_move
+        
+
+        x, y = last_move  
         player = board.grid[x][y]
         
         for axis in self.directions:
@@ -42,6 +58,8 @@ class WinChecker:
             for (dx, dy) in axis:
                 count += self.direction_count(x, y, dx, dy, player, board)
                 if count >= 5:
+                    #debug:
+                    self.print_board(board)
                     return True
 
         return False

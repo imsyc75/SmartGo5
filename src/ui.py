@@ -33,27 +33,45 @@ class GomokuUI:
             start_pos = (offset, offset + i * self.CELL_SIZE)
             end_pos = (offset + self.GRID_SIZE - self.CELL_SIZE, offset + i * self.CELL_SIZE)
             pygame.draw.line(self.screen, self.LINE_COLOR, start_pos, end_pos)
+            
+            # Draw coordinates
+            font = pygame.font.Font(None, 24) 
     
+            for i in range(self.BOARD_SIZE):
+                text = font.render(str(i), True, self.LINE_COLOR)
+                self.screen.blit(text, (offset + i * self.CELL_SIZE - text.get_width()//2, offset//2))
+                self.screen.blit(text, (offset + i * self.CELL_SIZE - text.get_width()//2, offset + self.GRID_SIZE - self.CELL_SIZE + offset//2))
+    
+
+            for i in range(self.BOARD_SIZE):
+                text = font.render(str(i), True, self.LINE_COLOR)
+                self.screen.blit(text, (offset//2 - text.get_width()//2, 
+                               offset + i * self.CELL_SIZE - text.get_height()//2))
+                self.screen.blit(text, (offset + self.GRID_SIZE - self.CELL_SIZE + offset//2 - text.get_width()//2,
+                               offset + i * self.CELL_SIZE - text.get_height()//2))
+                
+
+
     def draw_pieces(self):
         offset = self.CELL_SIZE
         radius = self.CELL_SIZE // 2 - 2
         
-        for x in range(self.BOARD_SIZE):
-            for y in range(self.BOARD_SIZE):
-                piece = self.game.board.grid[x][y]
+        for row in range(self.BOARD_SIZE):
+            for col in range(self.BOARD_SIZE):
+                piece = self.game.board.grid[col][row]
                 if piece:
-                    center = (offset + x * self.CELL_SIZE, offset + y * self.CELL_SIZE)
+                    center = (offset + col * self.CELL_SIZE, offset + row * self.CELL_SIZE)
                     color = self.BLACK if piece == 'X' else self.WHITE
                     pygame.draw.circle(self.screen, color, center, radius)
                     if piece == 'O':  # Draw border for white pieces
                         pygame.draw.circle(self.screen, self.BLACK, center, radius, 1)
     
     def get_grid_position(self, mouse_pos):
-        x, y = mouse_pos
+        mouse_x, mouse_y = mouse_pos
         offset = self.CELL_SIZE
-        grid_x = round((x - offset) / self.CELL_SIZE)
-        grid_y = round((y - offset) / self.CELL_SIZE)
-        return grid_x, grid_y
+        col = round((mouse_x - offset) / self.CELL_SIZE)
+        row = round((mouse_y - offset) / self.CELL_SIZE)
+        return col, row
     
     def run(self):
         running = True

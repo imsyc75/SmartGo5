@@ -9,7 +9,9 @@ class GomokuGame:
         self.moves = []
 
     def play_turn(self, x, y):
+        print(f"Game received move: ({x}, {y})") #debug
         if self.board.make_move(x, y, self.current_player):
+            print(f"Move made, last_move is now: {self.board.last_move}") #debug
             if (x, y) in self.moves:
                 self.moves.remove((x, y))
             self.ai.update_candidate_moves(self.board, (x, y), self.moves)
