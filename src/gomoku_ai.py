@@ -15,6 +15,16 @@ class GomokuAI:
         }
 
     def update_candidate_moves(self, board, move, moves):
+        """
+        Update the list of candidate positions.
+        Add empty spaces within 2 spaces arount the last move as candidate positions.
+
+        Args:
+        board: the board
+        move: the position of the last move (x,y)
+        moves: the list of candidate positions
+        """
+
         x, y = move
         # Add an empty space within 2 spaces around
         for i in range(max(0, x-2), min(self.board_size, x+3)):
@@ -25,6 +35,13 @@ class GomokuAI:
                     moves.append((i, j)) 
 
     def get_vectors(self, board):
+        """
+        Get all valid vectors(rows, columns and diagonals) on the chess board.
+
+        Return:
+        vectors(list): list of all valid vectors
+        """
+
         vectors = []
         
         # Horizontal vector
@@ -61,6 +78,17 @@ class GomokuAI:
         return vectors
     
     def evaluate_vector(self, vector, player):
+        """
+        Evaluate the score of a single vector (five/four/three in a row, etc.)
+
+        Args:
+        vector(list): the vector to be evaluated
+        player: "X"(human) or "O"(AI)
+
+        Return:
+        score(int): the score of the vector
+        """
+
         score = 0
         vector_str = ''.join(['.' if x is None else x for x in vector])
         opponent = 'X' if player == 'O' else 'O'
@@ -116,6 +144,13 @@ class GomokuAI:
         return score
     
     def evaluate_board(self, board):
+        """
+        Evaluate the score of the whole board status.
+
+        Return:
+        int: the score difference between the AI and the opponent
+        """
+
         vectors = self.get_vectors(board)
         ai_score = sum(self.evaluate_vector(v, 'O') for v in vectors)
         opponent_score = sum(self.evaluate_vector(v, 'X') for v in vectors)
@@ -123,6 +158,21 @@ class GomokuAI:
 
 
     def minimax(self, board, depth, is_maximizing, moves, alpha=-float('inf'), beta=float('inf')):
+        """
+        Minimax algorithm with alpha-beta puring. Search the best placement.
+
+        Args:
+        board: the board
+        depth: the depthe of current search
+        is_maximizing: maximized player (AI)
+        moves: the list of candidate positions
+        alpha: default is negative infinity
+        beta: default is positive infinity
+
+        Return:
+        tuple: (the best score, the best position)
+        """
+
         if board.check_win():
             if is_maximizing:
                 return -9999999999, None

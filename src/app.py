@@ -9,6 +9,14 @@ class GomokuGame:
         self.moves = []
 
     def play_turn(self, x, y):
+        """
+        Execute a game turn, including player moves and AI responses.
+
+        Return:
+        str: if a player wins, return the player ("X" or "O")
+        False: if the move was invalid, return False
+        Otherwise return None
+        """
         if self.board.make_move(x, y, self.current_player):
             if (x, y) in self.moves:
                 self.moves.remove((x, y))
@@ -17,7 +25,7 @@ class GomokuGame:
             if self.board.check_win():
                 return self.current_player
                 
-            if self.current_player == 'X':  # X is player, O is AI
+            if self.current_player == 'X':
                 self.current_player = 'O'
                 # AI moves
                 _, ai_move = self.ai.minimax(self.board, self.ai.search_depth, True, self.moves)
