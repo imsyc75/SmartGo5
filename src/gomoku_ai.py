@@ -120,27 +120,9 @@ class GomokuAI:
         ai_score = sum(self.evaluate_vector(v, 'O') for v in vectors)
         opponent_score = sum(self.evaluate_vector(v, 'X') for v in vectors)
         return ai_score - opponent_score
-    
-    def debug_evaluate_position(self, board):#Debug
-        print("\n=== Debug: Evaluating Current Position ===")
-        vectors = self.get_vectors(board)
-        print(f"Total vectors found: {len(vectors)}")
-        
-        for i, vector in enumerate(vectors):
-            vector_str = ''.join(['.' if x is None else x for x in vector])
-            if 'OOOO' in vector_str:
-                print(f"\nFound vector {i} with four O's:")
-                print(f"Vector content: {vector_str}")
-                score = self.evaluate_vector(vector, 'O')
-                print(f"Vector score: {score}")
-                
-        total_score = self.evaluate_board(board)
-        print(f"\nTotal board evaluation score: {total_score}")
+
 
     def minimax(self, board, depth, is_maximizing, moves, alpha=-float('inf'), beta=float('inf')):
-        # Debug
-        is_top_level = depth == self.search_depth
-
         if board.check_win():
             if is_maximizing:
                 return -9999999999, None
@@ -149,8 +131,6 @@ class GomokuAI:
         
         if depth == 0:
             score = self.evaluate_board(board)
-            if is_top_level: #debug
-                print(f"Leaf node evaluation: {score}")
             return score, None
         
         best_move = None
@@ -162,18 +142,18 @@ class GomokuAI:
                 board.grid[x][y] = 'O'
                 old_last_move = board.last_move
                 board.last_move = (x, y)
-
-                # Debug:
-                if is_top_level:
-                    print(f"simulation: {(x, y)}, lastmove: {old_last_move}")
+                
+                if board.check_win(): #Check if this step is a direct win
+                    board.grid[x][y] = None
+                    board.last_move = old_last_move
+                    return float('inf'), move
+            
 
                 new_moves = moves.copy()
                 new_moves.remove(move)
                 self.update_candidate_moves(board, move, new_moves)
                 
                 score, _ = self.minimax(board, depth-1, False, new_moves, alpha, beta)
-                if is_top_level: #debug
-                    print(f"Move {move} score: {score}")
 
                 board.grid[x][y] = None
                 board.last_move = old_last_move
@@ -192,17 +172,17 @@ class GomokuAI:
                 board.grid[x][y] = 'X'
                 old_last_move = board.last_move
                 board.last_move = (x, y)
-                # Debug: 打印模拟落子位置和上一步位置
-                if is_top_level:
-                    print(f"simulation: {(x, y)}, lastmove: {old_last_move}")
 
+                if board.check_win(): #Check if this step is a direct win
+                    board.grid[x][y] = None
+                    board.last_move = old_last_move
+                    return -float('inf'), move
+                
                 new_moves = moves.copy()
                 new_moves.remove(move)
                 self.update_candidate_moves(board, move, new_moves)
                 
                 score, _ = self.minimax(board, depth-1, True, new_moves, alpha, beta)
-                if is_top_level:#debug
-                    print(f"Move {move} score: {score}")
 
                 board.grid[x][y] = None
                 board.last_move = old_last_move
