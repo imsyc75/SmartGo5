@@ -16,11 +16,14 @@ class TestGomokuGame(unittest.TestCase):
         self.assertEqual(self.game.current_player, 'X')  # After AI playing, its player.
     
     def test_win_detection(self):
-        #Check if player 'X' wins are correctly detected after step 5
-        moves = [(0,0), (0,1), (0,2), (0,3), (0,4)]
-        result = self.game.play_turn(*moves[-1])
-        for x, y in moves[:-1]:
-            self.game.play_turn(x, y)
-            self.assertIsNone(result)  
+        # Create a new game instance to test the win detection logic, avoiding the influence of AI
+        game = GomokuGame(board_size=20)
+        game.moves = []
 
+        for i in range(4):
+            game.board.grid[0][i] = 'X'
+
+        game.board.last_move = (0, 3)
+        game.current_player = 'X'
+        result = game.play_turn(0, 4)
         self.assertEqual(result, 'X')
