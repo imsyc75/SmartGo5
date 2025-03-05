@@ -27,3 +27,23 @@ class TestGomokuGame(unittest.TestCase):
         game.current_player = 'X'
         result = game.play_turn(0, 4)
         self.assertEqual(result, 'X')
+
+    def test_invalid_move(self):
+        self.game.board.make_move(5, 5, 'X')
+        result = self.game.play_turn(5, 5)
+        self.assertEqual(result, False)
+
+    def test_ai_no_move(self):
+        original_minimax = self.game.ai.minimax
+        try:
+            self.game.ai.minimax = lambda *args: (0, None)
+            result = self.game.play_turn(10, 10)
+            self.assertIsNone(result)
+        finally:
+            self.game.ai.minimax = original_minimax
+
+    def test_game_start(self):
+        self.game.start()
+
+if __name__ == '__main__':
+    unittest.main()

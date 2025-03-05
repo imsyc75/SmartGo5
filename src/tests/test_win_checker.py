@@ -38,5 +38,16 @@ class TestWinChecker(unittest.TestCase):
             self.board.make_move(x, y, 'X')
         count = self.win_checker.direction_count(5, 5, 1, 0, 'X', self.board)
         self.assertEqual(count, 2)  
+    
+    def test_check_win_with_no_last_move(self):
+        result = self.win_checker.check_win(self.board, None)
+    
+        self.assertFalse(result)
+    
+        self.board.last_move = None
+        result = self.win_checker.check_win(self.board, self.board.last_move)
+        self.assertFalse(result) 
+    
+
 if __name__ == '__main__':
     unittest.main()
