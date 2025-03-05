@@ -1,6 +1,9 @@
 # SmartGo5
 This project is an implementation of Gomoku AI as part of the Data Structures and Algorithms Project course (TKT20010). The author is a BSc student in the Computer Science Program (TKT) in University of Helsinki.
 
+[![GHA workflow badge](https://github.com/imsyc75/SmartGo5/workflows/CI/badge.svg)](https://github.com/imsyc75/SmartGo5/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/imsyc75/SmartGo5/graph/badge.svg?token=7Z7JGE8W6I)](https://codecov.io/gh/imsyc75/SmartGo5)
+
 ## Documentation
 [Määrittelydokumentti](docs/maarittelydokumentti.md)
 [Testausdokumentti](docs/testausdokumentti.md)
