@@ -75,6 +75,15 @@ class GomokuUI:
             self.BUTTON_COLOR,
             self.BUTTON_HOVER_COLOR
         )
+
+        self.restart_button = Button(
+            self.WINDOW_SIZE - 90,
+            self.WINDOW_SIZE - 40,
+            80, 30,
+            "Restart",
+            self.BUTTON_COLOR,
+            self.BUTTON_HOVER_COLOR
+        )
         
     def start_new_game(self):
         self.game = GomokuGame(board_size=self.BOARD_SIZE)
@@ -127,6 +136,8 @@ class GomokuUI:
                            offset + i * self.CELL_SIZE - text.get_height()//2))
             self.screen.blit(text, (offset + self.GRID_SIZE - self.CELL_SIZE + offset//2 - text.get_width()//2,
                            offset + i * self.CELL_SIZE - text.get_height()//2))
+        
+        self.restart_button.draw(self.screen)
 
     def draw_pieces(self):
         offset = self.CELL_SIZE
@@ -161,7 +172,9 @@ class GomokuUI:
                         self.start_new_game()
                         
                 elif self.state == "GAME":
-                    if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.restart_button.handle_event(event):
+                        self.start_new_game()
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
                         x, y = self.get_grid_position(event.pos)
                         if 0 <= x < self.BOARD_SIZE and 0 <= y < self.BOARD_SIZE:
                             result = self.game.play_turn(x, y)
