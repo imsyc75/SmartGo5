@@ -13,4 +13,4 @@ Testikattavuus on 100%.
 ![testikattavuus](Testikattavuusraportti.png)
 
 ## Muu testaus
-Manuaalinen testaus on jaettu käyttöliittymätestaukseen ja toiminnalliseen testaukseen. Käyttöliittymä toimii sujuvasti, eikä vuorovaikutuksessa ole ongelmia. Tekoäly pystyy tekemään parhaan päätöksen 4-vaiheisessa voittotilanteessa ja voi tehokkaasti tunnistaa ja estää pelaajan voittoreitin. Tekoälyn keskimääräinen ajatteluaika pysyy 5 sekunnissa, vaikka sitä pidennettäisiin pelin myöhemmissä vaiheissa, se ei ylitä 20 sekuntia.
+Käyttöliittymä toimii sujuvasti, eikä vuorovaikutuksessa ole ongelmia. Tekoäly pystyy tekemään parhaan päätöksen 4-vaiheisessa voittotilanteessa ja voi tehokkaasti tunnistaa ja estää pelaajan voittoreitin. Tekoälyn keskimääräinen ajatteluaika pysyy 5 sekunnissa, vaikka sitä pidennettäisiin pelin myöhemmissä vaiheissa, se ei ylitä 20 sekuntia.
