@@ -42,6 +42,22 @@ class WinChecker:
                            [(-1, -1), (1, 1)]]  
            
     def check_win(self, board, last_move):
+        """
+            This method examines the board state to determine 
+            if the player who made the last move has achieved five consecutive pieces in any direction.
+            
+            Args:
+            board: The game board object containing the current state.
+            last_move: A tuple (x, y) representing the coordinates of the last move, 
+            or None if no move was made.
+    
+            Returns:
+            bool: True if the last move resulted in a win, False otherwise.
+           
+            Note:
+            The method relies on the directions defined in self.directions
+            and uses the direction_count to count consecutive pieces.
+        """
         if not last_move:
             return False
 
