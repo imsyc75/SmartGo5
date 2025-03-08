@@ -8,6 +8,8 @@ This project is an implementation of Gomoku AI as part of the Data Structures an
 [Määrittelydokumentti](docs/maarittelydokumentti.md)
 [Testausdokumentti](docs/testausdokumentti.md)
 [Toteusdokumentti](docs/toteu6dokumentti.md)
+[Käyttöohje](docs/käyttöohje.md)
+
 
 ## Week report
 [Viikko 1](docs/viikkoraportit/viikko1.md)
