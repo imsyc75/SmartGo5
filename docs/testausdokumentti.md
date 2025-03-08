@@ -10,7 +10,7 @@
 Yksikkötestejä on yhteensä 28, kaikki läpäisty. Testit ajettu 8.3.2024 
 ![testiraportti](testi.png)
 Testikattavuus on 100%. 
-![testikattavuus](testikattavuusraportti.png)
+![testikattavuus](Testikattavuusraportti.png)
 
 ## Muu testaus
 Manuaalinen testaus on jaettu käyttöliittymätestaukseen ja toiminnalliseen testaukseen. Käyttöliittymä toimii sujuvasti, eikä vuorovaikutuksessa ole ongelmia. Tekoäly pystyy tekemään parhaan päätöksen 4-vaiheisessa voittotilanteessa ja voi tehokkaasti tunnistaa ja estää pelaajan voittoreitin. Tekoälyn keskimääräinen ajatteluaika pysyy 5 sekunnissa, vaikka sitä pidennettäisiin pelin myöhemmissä vaiheissa, se ei ylitä 20 sekuntia.
