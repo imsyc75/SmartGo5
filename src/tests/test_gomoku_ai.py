@@ -111,11 +111,11 @@ class TestGomokuAI(unittest.TestCase):
 
 
     def test_minimax_win_detection_maximizing(self):
-        self.board.make_move(10, 10, 'O')
-        self.board.make_move(10, 11, 'O')
-        self.board.make_move(10, 12, 'O')
-        self.board.make_move(10, 13, 'O')
-        self.board.make_move(10, 14, 'O') 
+        self.board.make_move(10, 10, 'X')
+        self.board.make_move(10, 11, 'X')
+        self.board.make_move(10, 12, 'X')
+        self.board.make_move(10, 13, 'X')
+        self.board.make_move(10, 14, 'X') 
         self.board.last_move = (10, 14)
     
         score, move = self.ai.minimax(self.board, 1, True, [(5, 5)])
@@ -124,11 +124,11 @@ class TestGomokuAI(unittest.TestCase):
         self.assertIsNone(move)
     
     def test_minimax_win_detection_minimizing(self):
-        self.board.make_move(10, 10, 'X')
-        self.board.make_move(10, 11, 'X')
-        self.board.make_move(10, 12, 'X')
-        self.board.make_move(10, 13, 'X')
-        self.board.make_move(10, 14, 'X') 
+        self.board.make_move(10, 10, 'O')
+        self.board.make_move(10, 11, 'O')
+        self.board.make_move(10, 12, 'O')
+        self.board.make_move(10, 13, 'O')
+        self.board.make_move(10, 14, 'O') 
         self.board.last_move = (10, 14)
     
         score, move = self.ai.minimax(self.board, 1, False, [(5, 5)])
