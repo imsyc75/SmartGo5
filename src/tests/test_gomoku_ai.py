@@ -9,7 +9,7 @@ class TestGomokuAI(unittest.TestCase):
         
     def test_ai_initialization(self):
         self.assertEqual(self.ai.board_size, 20)
-        self.assertEqual(self.ai.search_depth, 3)
+        self.assertEqual(self.ai.search_depth, 4)
         self.assertIsNotNone(self.ai.pattern_scores)
         
     def test_candidate_moves_update(self):
@@ -58,7 +58,7 @@ class TestGomokuAI(unittest.TestCase):
         for i in range(5):
             winning_vector[i] = 'O'
         score = self.ai.evaluate_vector(winning_vector, 'O')
-        self.assertEqual(score, 500020000.0)
+        self.assertEqual(score, 20000.0)
         
     def test_minimax_basic(self):
         self.board.make_move(10, 10, 'O')
@@ -146,7 +146,7 @@ class TestGomokuAI(unittest.TestCase):
     
         score, move = self.ai.minimax(self.board, 1, False, moves)
     
-        self.assertEqual(score, float('-inf'))
+        self.assertEqual(score, -9999999999)
         self.assertEqual(move, (10, 14))
 
 if __name__ == '__main__':

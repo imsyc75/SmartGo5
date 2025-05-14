@@ -1,7 +1,7 @@
 from gomoku import Board
 
 class GomokuAI:
-    def __init__(self, board_size=20, search_depth=3):
+    def __init__(self, board_size=20, search_depth=4):
         self.board_size = board_size
         self.search_depth = search_depth
         self.pattern_scores = {
@@ -26,9 +26,9 @@ class GomokuAI:
         """
 
         x, y = move
-        # Add an empty space within 2 spaces around
-        for i in range(max(0, x-2), min(self.board_size, x+3)):
-            for j in range(max(0, y-2), min(self.board_size, y+3)):
+        # Add an empty space within 1 space around
+        for i in range(max(0, x-1), min(self.board_size, x+2)):
+            for j in range(max(0, y-1), min(self.board_size, y+2)):
                 if board.grid[i][j] is None:
                     if (i, j) in moves:
                         moves.remove((i, j))
@@ -93,9 +93,6 @@ class GomokuAI:
         vector_str = ''.join(['.' if x is None else x for x in vector])
         opponent = 'X' if player == 'O' else 'O'
             
-        if f'{player}{player}{player}{player}{player}' in vector_str:
-            score += self.pattern_scores['win5']
-        
         if f'.{player}{player}{player}{player}.' in vector_str:
             score += self.pattern_scores['open4']
         
@@ -193,11 +190,6 @@ class GomokuAI:
                 old_last_move = board.last_move
                 board.last_move = (x, y)
                 
-                if board.check_win(): #Check if this step is a direct win
-                    board.grid[x][y] = None
-                    board.last_move = old_last_move
-                    return float('inf'), move
-            
 
                 new_moves = moves.copy()
                 new_moves.remove(move)
@@ -223,11 +215,7 @@ class GomokuAI:
                 old_last_move = board.last_move
                 board.last_move = (x, y)
 
-                if board.check_win(): #Check if this step is a direct win
-                    board.grid[x][y] = None
-                    board.last_move = old_last_move
-                    return -float('inf'), move
-                
+
                 new_moves = moves.copy()
                 new_moves.remove(move)
                 self.update_candidate_moves(board, move, new_moves)
